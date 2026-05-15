@@ -169,4 +169,4 @@ class ModalCreator(discord.ui.Modal):
             await interaction.response.send_message("Modal wysłany, ale brak funkcji obsługującej (callback).", ephemeral=True)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        await interaction.response.send_message(f'Wystąpił błąd w modalu: {error}', ephemeral=True)
+        await interaction.followup.send(f'Wystąpił błąd w modalu: {error}', ephemeral=True)

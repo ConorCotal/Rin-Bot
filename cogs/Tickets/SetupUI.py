@@ -1,7 +1,5 @@
 import discord
 from discord.ext import commands
-from discord import app_commands
-
 from .UI.Buttons import Buttons
 
 class SetupUI(commands.Cog):
@@ -9,12 +7,14 @@ class SetupUI(commands.Cog):
         self.bot = bot
         self.buttons = Buttons(bot)
 
+        self.service_view = None
         self.mc_view = None
         self.other_view = None
 
     async def cog_load(self):
         self.buttons.create()
         await self.buttons.modals.create()
+        self.service_view = self.buttons.service_view
         self.mc_view = self.buttons.mc_view
         self.other_view = self.buttons.other_view
 

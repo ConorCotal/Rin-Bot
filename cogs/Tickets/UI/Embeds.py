@@ -4,8 +4,16 @@ from utils.UI import EmbedCreator, field
 
 class EmbedType(Enum):
     INFO = "info"
+    MESSAGE = "message"
+    SERVICE = "service"
+    CLAIM = "claim"
+    CLOSE = "close"
     EVENT = "event"
     HELP = "help"
+    CK = "ck"
+    REPORT_PLAYER = "report_player"
+    REPORT_ERROR = "report_error"
+    CONTACT = "contact"
 
 class Embeds:
     def __init__(self, user: discord.User, inputs: dict):
@@ -22,13 +30,34 @@ class Embeds:
                 description="> Poniżej znajdują się informacje o użytkowniku, który utworzył ticket.",
                 color=discord.Color.blue(),
                 fields=[
-                    field(f"Użytkownik: {self.user.mention}", f">>> Nickname: `{self.user.name}`\nID: `{self.user.id}`", False),
+                    field(f"Nickname: `{self.user.name}`", f">>> Użytkownik: {self.user.mention}\nID: `{self.user.id}`", False),
                     field(f"Dołączono: `{self.user.joined_at.strftime('%d-%m-%Y %H:%M')}`", f"> Utworzono: `{self.user.created_at.strftime('%d-%m-%Y %H:%M')}`", False)
                 ],
                 footer="RiftTales"
             ),
+            EmbedType.MESSAGE: EmbedCreator(
+                title="Nowy Ticket",
+                description="> Ticket został utworzony, oraz Admity zostali powiadomieni. Prosimy o cierpliwość, wkrótce ktoś się zajmie Twoją sprawą. Do tego czasu możesz dopisać więcej szczegółów do swojego zgłoszenia. Pamietaj, że to kanał z ustawionym __**Trybem Powolnym na 2 Minuty**__ aby uniknąć spamu, staraj się wysyłać po jednej wiadomości. Kiedy ktoś **Zajmie** twój ticket ten **Limit** zostanie zdjęty.",
+                color=discord.Color.og_blurple(),
+                footer="RiftTales"
+            ),
+            EmbedType.SERVICE: EmbedCreator(
+                title="Panel Obsługi Ticketu",
+                description="",
+                color=discord.Color.dark_green(),
+                footer="RiftTales"
+            ),
+            EmbedType.CLOSE: EmbedCreator(
+                title="Ticket Zamknięty",
+                description=f"> Ticket został zamknięty przez {self.user.mention}",
+                color=discord.Color.red(),
+                fields=[
+                    field("Powód:", f"```\n{self.field_1}\n```", False)
+                ],
+                footer="RiftTales"
+            ),
             EmbedType.EVENT: EmbedCreator(
-                title="Podanie o Event 🎉",
+                title="🎉  Podanie o Event  🎉",
                 description="> Poniżej znajdują się szczegóły podania o event.",
                 color=discord.Color.gold(),
                 fields=[
@@ -41,7 +70,7 @@ class Embeds:
                 footer="RiftTales"
             ),
             EmbedType.HELP: EmbedCreator(
-                title="Potrzebuję Pomocy 🙏",
+                title="🙏  Potrzebuję Pomocy  🙏",
                 description="> Poniżej znajdują się szczegóły zgłoszenia pomocy.",
                 color=discord.Color.orange(),
                 fields=[
@@ -50,7 +79,48 @@ class Embeds:
                     field("Próby Rozwiązania", f"```\n{self.field_3}\n```", False),
                 ],
                 footer="RiftTales"
-            )
+            ),
+            EmbedType.CK: EmbedCreator(
+                title="💀  Character Kill  💀",
+                description="> Poniżej znajdują się szczegóły zgłoszenia CK.",
+                color=discord.Color.dark_red(),
+                fields=[
+                    field("Nickname Minecraft", f">>> `{self.field_1}`", False),
+                    field("Nickname Oponenta", f">>> `{self.field_2}`", False),
+                    field("Potrzebny GM", f">>> `{self.field_3}`", False),
+                    field("Opis Śmierci", f"```\n{self.field_4}\n```", False),
+                ],
+                footer="RiftTales"
+            ),
+            EmbedType.REPORT_PLAYER: EmbedCreator(
+                title="👤  Zgłoszenie Gracza  👤",
+                description="> Poniżej znajdują się szczegóły zgłoszenia gracza.",
+                color=discord.Color.dark_orange(),
+                fields=[
+                    field("Nickname Minecraft Zgłaszanego", f">>> `{self.field_1}`", False),
+                    field("Szczegóły Zgłoszenia", f"```\n{self.field_2}\n```", False),
+                ],
+                footer="RiftTales"
+            ),
+            EmbedType.REPORT_ERROR: EmbedCreator(
+                title="👾  Zgłoszenie Błędu  👾",
+                description="> Poniżej znajdują się szczegóły zgłoszenia błędu.",
+                color=discord.Color.dark_purple(),
+                fields=[
+                    field("Szczegóły Zgłoszenia", f"```\n{self.field_1}\n```", False),
+                ],
+                footer="RiftTales"
+            ),
+            EmbedType.CONTACT: EmbedCreator(
+                title="✉️  Kontakt  ✉️",
+                description="> Poniżej znajdują się szczegóły zgłoszenia kontaktowego.",
+                color=discord.Color.blurple(),
+                fields=[
+                    field("Temat", f">>> `{self.field_1}`", False),
+                    field("Treść", f"```\n{self.field_2}\n```", False),
+                ],
+                footer="RiftTales"
+            ),
         }
 
     def get(self, embed_type: EmbedType):
